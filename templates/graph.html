@@ -1,0 +1,361 @@
+{% load static %}
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
+        <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>-SAMPLELAB-</title>
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+        <!--     Fonts and icons     -->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+        <!-- CSS Files -->
+        <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
+        <link href="{% static 'assets/css/paper-dashboard.css' %}" rel="stylesheet" />
+        <!-- CSS Just for demo purpose, don't include it in your project -->
+        <link href="{% static 'assets/demo/demo.css' %}" rel="stylesheet" />
+    </head>
+
+    <body class="">
+        <div class="wrapper ">
+            <div class="sidebar" data-color="white" data-active-color="danger">
+                <div class="logo">
+                    <a href="" class="simple-text logo-mini">
+                      <!-- <div class="logo-image-small">
+                        <img src="./assets/img/logo-small.png">
+                      </div> -->
+                      <!-- <p>CT</p> -->
+                    </a>
+                    <a href="/" class="simple-text logo-normal">
+                      SAMPLELAB
+                      <!-- <div class="logo-image-big">
+                        <img src="../assets/img/logo-big.png">
+                      </div> -->
+                    </a>
+                </div>
+                <div class="sidebar-wrapper">
+                    <ul class="nav">
+                      <li>
+                        <a href="javascript:;">
+                          <i class="nc-icon nc-simple-add"></i>
+                          <p>CSV Upload</p>
+                        </a>
+                      </li>
+                      <li class="active ">
+                        <a href="javascript:;">
+                          <i class="nc-icon nc-check-2"></i>
+                          <p>Check Data</p>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="javascript:;">
+                          <i class="nc-icon nc-vector"></i>
+                          <p>Model Selection</p>
+                        </a>
+                      </li>
+                    </ul>
+                </div>
+            </div>
+        <div class="main-panel" style="height: 100vh;">
+          <!-- Navbar -->
+          <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+                <div class="container-fluid">
+                  <div class="navbar-wrapper">
+                    <div class="navbar-toggle">
+                      <button type="button" class="navbar-toggler">
+                        <span class="navbar-toggler-bar bar1"></span>
+                        <span class="navbar-toggler-bar bar2"></span>
+                        <span class="navbar-toggler-bar bar3"></span>
+                      </button>
+                    </div>
+                    <a class="navbar-brand" href="javascript:;">Sample Application</a>
+                  </div>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                  </button>
+
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+
+                        <ul class="navbar-nav">
+                          <li class="nav-item btn-rotate dropdown">
+                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="nc-icon nc-bell-55"></i>
+                                  <p>
+                                    <span class="d-lg-none d-md-block">Some Actions</span>
+                                  </p>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                  <a class="dropdown-item" href="#">Action</a>
+                                  <a class="dropdown-item" href="#">Another action</a>
+                                  <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                 </div>
+            </nav>
+            <!-- End Navbar -->
+              <div class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="card-title">Graph</h5>
+                        <p class="card-category">
+                            <a href="{% url 'testapp:index' %}">CSV Upload</a> >
+                            <a href="{% url 'testapp:gettableback' id %}">Check Data</a> >
+                            <a href="{% url 'testapp:getdetailback' id %}">Detail View</a> >
+                            Graph
+                        </p>
+                        <form action="{% url 'testapp:presplitdata' %}" method="post" id="next" name="next" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ id }}" id="id" name="id">
+                            <input type="submit" value="SPLIT DATA" class="btn btn-primary btn-round">
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                      <div class="col-md-6">
+                            <div class="card">
+                                 <div class="card-header">
+                                    <h5 class="card-title">Heatmap</h5>
+                                  </div>
+                                  <div class="card-body">
+                                      <div id="heatPlotly"></div>
+<!--                                    <canvas id="speedChart" width="400" height="250"></canvas>-->
+                                  </div>
+                                  <div class="card-footer">
+                                        <hr />
+                                        <div class="card-stats">
+                                            <i class="fa fa-check"></i> Data information certified
+                                        </div>
+                                 </div>
+                            </div>
+                      </div>
+                    <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Box Plot</h5>
+                                  </div>
+                                  <div class="card-body">
+<!--                                    <canvas id="boxPlot" width="400" height="250"></canvas>-->
+                                      <div id="boxPlotly"></div>
+                                  </div>
+                                  <div class="card-footer">
+                                        <hr />
+                                        <div class="card-stats">
+                                            <i class="fa fa-check"></i> Data information certified
+                                        </div>
+                                 </div>
+                            </div>
+                      </div>
+                </div>
+              </div>
+        </div>
+      </div>
+
+
+
+                <footer class="footer" style="position: relative; bottom: 0; width: -webkit-fill-available;">
+                    <div class="container-fluid">
+                        <div class="row">
+                                <nav class="footer-nav">
+                                  <ul>
+                                    <li><a href="" target="_blank">http://</a></li>
+                                  </ul>
+                                </nav>
+                                <div class="credits ml-auto">
+                                  <span class="copyright">
+                                    © 2020 by mhm
+                                  </span>
+                                </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <!--   Core JS Files   -->
+        <script src="{% static 'assets/js/core/jquery.min.js' %}"></script>
+        <script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+        <script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+<!--        <script src="{% static 'assets/js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.4.0/perfect-scrollbar.min.js"></script>
+        <!-- Chart JS -->
+        <script src="{% static 'assets/js/plugins/chartjs.min.js' %}"></script>
+        <!-- Plotly JS -->
+        <script src="https://cdn.plot.ly/plotly-2.0.0-rc.3.js" charset="utf-8"></script>
+        <!--  Notifications Plugin    -->
+        <script src="{% static 'assets/js/plugins/bootstrap-notify.js' %}"></script>
+        <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+        <script src="{% static 'assets/js/paper-dashboard.min.js' %}" type="text/javascript"></script>
+
+        <script>
+        var boxdata = []
+        var columns = []
+        var chartdata = []
+        var corrs = []
+
+        {% for c in cols %}
+        columns.push("{{ c }}")
+        {% endfor %}
+
+        {% for d in charts %}
+        chartdata.push({{ d }});
+        {% endfor %}
+
+        {% for r in corrz %}
+        corrs.push({{ r }})
+        {% endfor %}
+
+        for(var i=0; i<columns.length; i++) {
+            eval("var trace"+i+" = { y : chartdata[i], type : 'box', name: columns[i] }");
+            boxdata.push(eval("trace"+i));
+        };
+
+        var heatdata = [
+          {
+            z: corrs,
+            x: columns,
+            y: columns,
+            type: 'heatmap',
+            hoverongaps: false,
+            colorscale: 'RdBu'
+          }
+        ];
+
+        Plotly.newPlot('boxPlotly', boxdata)
+
+        Plotly.newPlot('heatPlotly', heatdata);
+
+        </script>
+
+
+
+<!--        <script>-->
+<!--            var speedCanvas = document.getElementById("speedChart");-->
+
+<!--            var datasets = []-->
+<!--            var columns = []-->
+<!--            var indexes = []-->
+<!--            var chartdata = []-->
+<!--            var colors = []-->
+
+<!--            {% for i in cols %}-->
+<!--            columns.push("{{ i }}")-->
+<!--            {% endfor %}-->
+
+<!--            {% for i in charts %}-->
+<!--            chartdata.push({{ i }});-->
+<!--            {% endfor %}-->
+
+<!--            {% for i in idxs %}-->
+<!--            indexes.push("{{ i }}");-->
+<!--            {% endfor %}-->
+
+<!--            {% for i in colors %}-->
+<!--            colors.push("{{ i }}");-->
+<!--            {% endfor %}-->
+
+<!--            for(var i=0; i<columns.length; i++) {-->
+<!--                eval("var data"+i+" = { \-->
+<!--                label : columns[i], \-->
+<!--                data : chartdata[i], \-->
+<!--                fill : false, \-->
+<!--                borderColor : colors[i], \-->
+<!--                backgroundColor: 'transparent', \-->
+<!--                pointBorderColor: colors[i], \-->
+<!--                pointRadius: 1, \-->
+<!--                pointHoverRadius: 1, \-->
+<!--                pointBorderWidth: 1, \-->
+<!--            }");-->
+
+<!--            datasets.push(eval("data"+i));-->
+<!--            }-->
+
+<!--            var speedData = {-->
+<!--              labels: indexes,-->
+<!--              datasets: datasets-->
+<!--            };-->
+
+<!--            var chartOptions = {-->
+<!--              legend: {-->
+<!--                display: true,-->
+<!--                position: 'top'-->
+<!--              },-->
+<!--            };-->
+
+<!--            var lineChart = new Chart(speedCanvas, {-->
+<!--              type: 'line',-->
+<!--              hover: true,-->
+<!--              data: speedData,-->
+<!--              options: chartOptions-->
+<!--            });-->
+
+
+
+<!--        </script>-->
+<!--        <script>-->
+<!--        var boxCanvas = document.getElementById("boxPlot");-->
+
+<!--        var datasets = []-->
+<!--        var columns = []-->
+<!--        var chartdata = []-->
+<!--        var colors = []-->
+
+<!--        {% for i in cols %}-->
+<!--        columns.push("{{ i }}")-->
+<!--        {% endfor %}-->
+
+<!--        {% for i in charts %}-->
+<!--        chartdata.push({{ i }});-->
+<!--        {% endfor %}-->
+
+<!--        {% for i in colors %}-->
+<!--        colors.push("{{ i }}");-->
+<!--        {% endfor %}-->
+
+<!--        for(var i=0; i<columns.length; i++) {-->
+<!--            eval("var data"+i+" = { \-->
+<!--            label : columns[i], \-->
+<!--            data : chartdata[i], \-->
+<!--            fill : false, \-->
+<!--            borderColor : colors[i], \-->
+<!--            backgroundColor: 'transparent', \-->
+<!--            borderWidth: 1, \-->
+<!--            outlierColor: '#999999', \-->
+<!--            padding: 10, \-->
+<!--            itemRadius:0, \-->
+<!--        }");-->
+
+<!--        datasets.push(eval("data"+i));-->
+<!--        }-->
+
+<!--        var boxData = {-->
+<!--          labels: columns,-->
+<!--          datasets: datasets-->
+<!--        };-->
+
+<!--        var chartOptions = {-->
+<!--          responsive : true,-->
+<!--          legend: {-->
+<!--            position: 'top'-->
+<!--          },-->
+<!--        };-->
+
+<!--        var lineChart = new Chart(boxCanvas, {-->
+<!--          type: 'boxplot',-->
+<!--          data: boxData,-->
+<!--          options: chartOptions-->
+<!--        });-->
+
+
+
+<!--    </script>-->
+
+    </body>
+
+</html>
