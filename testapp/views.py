@@ -2,6 +2,7 @@ from django.shortcuts import render
 import pandas as pd
 from django.views.decorators.csrf import csrf_exempt
 import logging
+import operator
 import json
 import pickle
 from .models import Data, Temp
@@ -380,7 +381,15 @@ def modelchoose(request):
 
         score = round(mod.score(X_test, y_test), 2)
 
-        context = {'id': dataid, 'tempid': tempid, 'model': model, 'scaler': scale, 'score':score}
+        feature = mod.get_booster().get_score(importance_type='weight')
+        fi_zip = dict(zip(feature.values(), feature.keys()))
+        fi_zip = dict(sorted(fi_zip.items()))
+        print(fi_zip)
+        fi_k = list(fi_zip.values())
+        fi_v = list(fi_zip.keys())
+
+        context = {'id': dataid, 'tempid': tempid, 'model': model, 'scaler': scale, 'score':score,
+                   'fi_k':fi_k, 'fi_v':fi_v}
 
         return render(request, "score.html", context)
 
