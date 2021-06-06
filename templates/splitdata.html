@@ -122,38 +122,50 @@
                             <a href="{% url 'testapp:getgraphback' id %}">Graph</a> >
                             Split Data
                         </p>
-
-
-                      <form action="{% url 'testapp:splitdata' %}" method="post" id="data" name="data" enctype="multipart/form-data">
+                      </div>
+                    </div>
+                  <form action="{% url 'testapp:splitdata' %}" method="post" id="data" name="data" enctype="multipart/form-data">
                           {% csrf_token %}
-                          <table>
-                              <tr>
-                                  <td width="120" class="card-category"><b>X Column</b></td>
-                                  <td width="140">
+                      <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                 <div class="card-header">
+                                    <h6 class="card-title">X Column</h6>
+                                  </div>
+                                  <div class="card-body">
+
                                       {% for j in cols %}
                                           <input type="checkbox" id="{{ j }}" name="xcols[]" value="{{ j }}">
                                           <label for="{{ j }}">{{ j }}</label>
                                       <br>
                                       {% endfor %}
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td class="card-category">
-                                      <b>Y Column</b>
-                                  </td>
-                                  <td>
+                                  </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                 <div class="card-header">
+                                    <h6 class="card-title">Y Column</h6>
+                                  </div>
+                                  <div class="card-body">
                                       <select name="ycol">
                                           {% for i in cols %}
                                           <option value="{{ i }}">{{ i }}</option>
                                           {% endfor %}
                                       </select>
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td class="card-category">
-                                      <b>Test Size(%)</b>
-                                  </td>
-                                  <td>
+                                  </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                 <div class="card-header">
+                                    <h6 class="card-title">Test Size(%)</h6>
+                                  </div>
+                                  <div class="card-body">
                                       <select name="testsize">
                                           <option value="10">10 %</option>
                                           <option value="20">20 %</option>
@@ -166,19 +178,18 @@
                                           <option value="90">90 %</option>
                                           <option value="100">100 %</option>
                                       </select>
-                                  </td>
-                              </tr>
-                          </table>
+                                  </div>
+                            </div>
+                        </div>
+                      </div>
+
                           <input type="hidden" value="{{ id }}" id="id" name="id">
                           <input type="submit" value="CHOOSE MODEL" class="btn btn-primary btn-round">
                       </form>
+                    </div>
 
 
-                  </div>
-                </div>
-              </div>
-
-                <footer class="footer" style="position: absolute; bottom: 0; width: -webkit-fill-available;">
+                <footer class="footer" style="position: relative; bottom: 0; width: -webkit-fill-available;">
                     <div class="container-fluid">
                         <div class="row">
                                 <nav class="footer-nav">

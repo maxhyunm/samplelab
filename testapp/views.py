@@ -11,8 +11,10 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
-from xgboost import XGBClassifier
-from xgboost import XGBRegressor
+# from xgboost import XGBClassifier
+# from xgboost import XGBRegressor
+from lightgbm import LGBMRegressor
+from lightgbm import LGBMClassifier
 
 logger = logging.getLogger('my')
 
@@ -370,10 +372,12 @@ def modelchoose(request):
             df = pd.DataFrame(scaler, columns=xcols)
 
         if model == 'Regressor' :
-            mod = XGBRegressor()
+            # mod = XGBRegressor()
+            mod = LGBMRegressor()
         # elif model == 'Classifier' :
         else :
-            mod = XGBClassifier()
+            # mod = XGBClassifier()
+            mod = LGBMClassifier()
 
         X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=testsize)
 
@@ -381,12 +385,20 @@ def modelchoose(request):
 
         score = round(mod.score(X_test, y_test), 2)
 
-        feature = mod.get_booster().get_score(importance_type='weight')
-        fi_zip = dict(zip(feature.values(), feature.keys()))
-        fi_zip = dict(sorted(fi_zip.items()))
-        print(fi_zip)
-        fi_k = list(fi_zip.values())
-        fi_v = list(fi_zip.keys())
+
+        # xgb 모델 feature importance
+        # feature = mod.get_booster().get_score(importance_type='weight')
+        # fi_zip = dict(zip(feature.values(), feature.keys()))
+        # fi_zip = dict(sorted(fi_zip.items()))
+        # fi_k = list(fi_zip.values())
+        # fi_v = list(fi_zip.keys())
+
+        # lightgbm 모델 feature importance
+        feature = pd.DataFrame({'feature': df.columns.tolist(),
+                                'importance': mod.feature_importances_}).sort_values(by="importance",
+                                                                                       ascending=False)
+        fi_k = feature[['feature']].values.tolist()
+        fi_v = feature[['importance']].values.tolist()
 
         context = {'id': dataid, 'tempid': tempid, 'model': model, 'scaler': scale, 'score':score,
                    'fi_k':fi_k, 'fi_v':fi_v}
