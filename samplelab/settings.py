@@ -40,7 +40,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'a2lab_sample.urls'
+ROOT_URLCONF = 'samplelab.urls'
 
 TEMPLATES = [
     {
@@ -58,7 +58,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'a2lab_sample.wsgi.application'
+WSGI_APPLICATION = 'samplelab.wsgi.application'
 
 
 # Database

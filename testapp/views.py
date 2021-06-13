@@ -4,15 +4,10 @@ from django.views.decorators.csrf import csrf_exempt
 import logging
 import operator
 import json
-import pickle
 from .models import Data, Temp
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-import seaborn as sns
-# from xgboost import XGBClassifier
-# from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 from lightgbm import LGBMClassifier
 
@@ -35,12 +30,7 @@ def upfile(request) :
         if format == 'csv' :
             try:
                 df = pd.read_csv(file, encoding='cp949')
-                # cols = df.columns.tolist()
-                # test1 = df.to_json(orient='split')
-                # test2 = json.loads(test1)
-                # test_cols = test2['columns']
-                # test_data = test2['index']
-                # test3 = pd.DataFrame(test_data, columns=test_cols)
+
 
             except:
                 df = pd.read_csv(file, encoding='utf-8')
@@ -59,7 +49,6 @@ def upfile(request) :
     js_to_data = []
     js_to_data = json.loads(js)
     cols = js_to_data['columns']
-    # idx = js_to_data['index']
     data = js_to_data['data']
     lendata = range(len(data))
     context = {'cols': cols, 'data':data, 'id': id, 'lendata' : lendata}
@@ -260,35 +249,6 @@ def getgraphback(request, id):
 
     return render(request, 'graph.html', context)
 
-# def getgraph00(request):
-#     logger.info("getgraph 진입")
-#
-#     if request.method == 'POST':
-#         idx = request.POST.get('id')
-#         data = Data.objects.filter(idx=idx).values()[0]['fixednumfile']
-#         df_ori = pd.read_json(data, orient='split')
-#         cols = df_ori.columns.tolist()
-#         for i in cols :
-#             if df_ori[i].dtypes == 'O' :
-#                 cols.remove(i)
-#         df= df_ori[cols]
-#         idxs = df.index.tolist()
-#         charts = []
-#         for i in cols :
-#             charts.append(df.loc[:, i].tolist())
-#         colors20 = ["#9999FF","#CC99CC","#66CC66","#FFFF33","#00CCCC","#FF0066","#993333",
-#                   "#006666","#FF9933","#66FFCC","#660066","#3399FF","#6699CC","#999999",
-#                   "#6666CC","#FFCC66","#66FFFF","#FF9966","#FF6633","#99FF00"]
-#         if len(cols) <= len(colors20) :
-#             colors = colors20[:len(cols)]
-#         else :
-#             total_len = round(len(cols)/len(colors20))+1
-#             colors_total = []
-#             for i in range(total_len) :
-#                 colors_total += colors20
-#             colors = colors_total[:len(cols)]
-#         context = {'cols' : cols, 'charts' : charts, 'idxs' : idxs, 'colors':colors, 'id':idx}
-#     return render(request, 'graph.html', context)
 
 @csrf_exempt
 def presplitdata(request):
